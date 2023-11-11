@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react'
+import {SinglyLinkedList} from './LinkedList'
+import AddTrackForm from './AddTrackForm';
+import Playlist from './Playlist'
 
-function App() {
+const App = () => {
+  const [playlist, setPlaylist] = useState(new SinglyLinkedList());
+
+  const addTrackToPlaylist = (trackData) => {
+    // Clone the current playlist and append the new track
+    const newPlaylist = new SinglyLinkedList();
+    newPlaylist.head = playlist.head;
+    newPlaylist.append(trackData);
+    setPlaylist(newPlaylist); // Update with the new instance that has the new track
+  };
+
+  const removeTrackFromPlaylist = (trackId) => {
+    const newPlaylist = new SinglyLinkedList();
+    newPlaylist.head = playlist.head;
+    newPlaylist.removeById(trackId);
+    setPlaylist(newPlaylist);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <AddTrackForm onAddTrack={addTrackToPlaylist} />
+      <Playlist playlist={playlist} onRemoveTrack={removeTrackFromPlaylist} />
     </div>
   );
 }
